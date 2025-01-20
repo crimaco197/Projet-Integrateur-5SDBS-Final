@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+requests
+bs4
+lxml
+selenium
+dnspython

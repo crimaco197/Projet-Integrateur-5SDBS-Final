@@ -1,0 +1,28 @@
+services:
+  db_service:
+    build: ./db_service
+    container_name: db_service
+    ports:
+      - "8001:8000"
+
+  feature_extraction_service:
+    build: ./feature_extraction_service
+    container_name: feature_extraction_service
+    ports:
+      - "8002:8000"
+
+  orchestrator_service:
+    build: ./orchestrator_service
+    container_name: orchestrator_service
+    ports:
+      - "8003:8000"
+
+  model_service:
+    build: ./model_IA_service
+    container_name: model_IA_service
+    ports:
+      - "8004:8000"
+
+networks:
+  default:
+    driver: bridge
