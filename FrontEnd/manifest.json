@@ -1,0 +1,11 @@
+{
+    "manifest_version": 3,
+    "name": "Fiability Assessment",
+    "description": "An Extension for Assessing website fiability",
+    "version": "1.0.0",
+    "action": {
+      "default_popup": "index.html",
+      "default_icon": "images.png",
+      "default_title": "Fiability Assessment"
+    }
+}

@@ -31,3 +31,7 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# Python files
+.ipynb_checkpoints
+BackEnd/feature_extraction_service/.ipynb_checkpoints
