@@ -55,8 +55,6 @@ def predict_from_features(features_json: Features):
     :param features_json: dict con los valores de las características
     :return: dict con la predicción traducida y la confianza
     """
-    # Convertir el JSON en un vector ordenado
-    # test_data_vector = np.array([[features_json.dict()[feature] for feature in feature_names]])
     # Crear un DataFrame con los nombres de las características
     test_data_vector = pd.DataFrame([features_json.dict()], columns=feature_names)
 
