@@ -16,7 +16,7 @@ The system consists of the following components:
 
 The backend is divided into multiple microservices, each deployed independently. The services communicate with each other via HTTP requests:
 
-#### **1. Database Service (********`db_service`********\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*)**
+#### **1. Database Service (**`db_service`**)
 
 - **Purpose**: Stores and retrieves information about URLs, including blacklists and reliability predictions.
 - **Port**: `8010`
