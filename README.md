@@ -16,7 +16,7 @@ The system consists of the following components:
 
 The backend is divided into multiple microservices, each deployed independently. The services communicate with each other via HTTP requests:
 
-#### **1. Database Service (`db_service`)
+### 1. Database Service (`db_service`)
 
 - **Purpose**: Stores and retrieves information about URLs, including blacklists and reliability predictions.
 - **Port**: `8010`
@@ -24,19 +24,19 @@ The backend is divided into multiple microservices, each deployed independently.
   - `GET /reliability/check/?url=<url>`: Check if a URL is in the database.
   - `POST /reliability/add/`: Add reliability data for a URL.
 
-#### **2. Feature Extraction Service (`feature_extraction_service`)
+### 2. Feature Extraction Service (`feature_extraction_service`)
 
 - **Purpose**: Extracts various features from the URL for analysis (e.g., domain age, DNS records, external links).
 - **Port**: Runs independently as required for feature processing.
 
-#### **3. Machine Learning Service (`model_IA_service`)
+### 3. Machine Learning Service (`model_IA_service`)
 
 - **Purpose**: Uses a pre-trained Random Forest model (`RandomForest_BestModel_8827.joblib`) to classify URLs as safe or malicious based on extracted features.
 - **Port**: `8004`
 - **Main Endpoint**:
   - `POST /predict/`: Accepts URL features and returns predictions.
 
-#### **4. Orchestrator Service (`orchestrator_service`)
+### 4. Orchestrator Service (`orchestrator_service`)
 
 - **Purpose**: Coordinates requests between the feature extraction, machine learning, and database services.
 - **Port**: `50000` (exposed for external requests in the INSA network).
