@@ -184,15 +184,13 @@ curl -X POST "http://192.168.37.14:8004/predict" \
 ---
 
 ## **Project contributors**
-
->## **Team**:
->> - Cristian Martinez
->> - Luz Vera
->> - Emilie Greaker
->> - Laura Cabanillas
->> - Elisabeth Maton
->> - Xuxin Zhu
-- **University**: INSA TOULOUSE
+> - Cristian Martinez
+> - Luz Vera
+> - Emilie Greaker
+> - Laura Cabanillas
+> - Elisabeth Maton
+> - Xuxin Zhu
+## **University**: INSA TOULOUSE
 
 ---
 
