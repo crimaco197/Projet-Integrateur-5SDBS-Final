@@ -10,10 +10,6 @@ from selenium.webdriver.common.keys import Keys
 import time
 
 def est_adresse_ip(url):
-    """
-    Détermine si une URL contient une adresse IP (IPv4 ou IPv6).
-    Retourne 1 si c'est une IP, -1 si ce n'est pas une IP, 0 en cas d'erreur.
-    """
     try:
         parsed_url = urlparse(url)
         host = parsed_url.netloc
@@ -33,35 +29,25 @@ def est_adresse_ip(url):
     
 
 def longueur_url(url):
-    """
-    Calcule et retourne une valeur en fonction de la longueur totale de l'URL :
-    -1 : si la longueur est < 54
-     0 : si 54 ≤ longueur ≤ 75
-     1 : si longueur > 75
-    """
     try:
         # Calculer la longueur totale de l'URL
         longueur = len(url)
         
         # Vérifier la plage de longueur et retourner la valeur correspondante
         if longueur < 54:
-            return -1
+            return 1
         elif 54 <= longueur <= 75:
             return 0
         else:
-            return 1
+            return -1
     except Exception as e:
         print(f"Erreur lors du calcul de la longueur de l'URL : {e}")
         return 0  # Retourne 0 en cas d'erreur
     
 def contient_arobase(url):
-    """
-    Vérifie si l'URL contient un caractère '@'.
-    Retourne 1 si '@' est présent, -1 sinon.
-    """
     try:
         # Vérifier si le caractère '@' est présent dans l'URL
-        return 1 if '@' in url else -1
+        return -1 if '@' in url else 1
     except Exception as e:
         print(f"Erreur lors de l'analyse de l'URL : {e}")
         return 0  # Retourne 0 en cas d'erreur
@@ -84,21 +70,61 @@ def contient_sous_domaine(url):
         
         # Si le domaine a plus de 2 parties, il y a un sous-domaine
         if len(parties_domaine) > 2:
-            print(f"L'URL contient un sous-domaine : {url}")
-            return 1
-        else:
-            print(f"L'URL ne contient pas de sous-domaine : {url}")
             return -1
+        if len(parties_domaine) == 1:
+            return 0
+        else:
+            return 1
 
     except Exception as e:
         print(f"Erreur lors de l'analyse de l'URL : {e}")
         return 0
     
+def double_slash_redirecting(url):
+    """
+    Verify if '//' appears after the character # 7
+    Return 1 if Pishing or 0 if Legitime
+    """
+    full_url = urlparse(url).geturl()
+    # print(full_url)
+    
+    # find all the // positions
+    occurrences = [i for i in range(len(full_url) - 1) if full_url[i:i+2] == '//']
+    # print(occurrences)
+    
+    # Verify if '//' is after position 7
+    return -1 if any(pos > 7 for pos in occurrences) else 1 # 1 is Legitimate, -1 is Phishing
+
+def domain_registeration_length(url):
+    """
+    See the WhoisXMLAPI API for domain information.
+    Returns -1 if expiration date is <= 1 years, otherwise returns 1 
+    """
+    api_key = "at_LY1xMXJhHmgeKtStzKc68kdTtMwvK"
+    domain = f"https://www.whoisxmlapi.com/whoisserver/WhoisService?domainName={url}&apiKey={api_key}&outputFormat=JSON"
+    try:
+        response = requests.get(domain)
+        data = response.json()
+        date = datetime.now()
+        expiration_date = data.get("WhoisRecord", {}).get("registryData", {}).get("expiresDate")
+        
+        if date and expiration_date:
+            expiration_date = expiration_date.replace("Z", "")
+            expiration_date = date.strptime(expiration_date, '%Y-%m-%dT%H:%M:%S')
+            
+            duration = (expiration_date - date).days // 365
+
+            if duration > 1:
+                return 1
+        else:
+            return -1
+    except Exception as e:
+        print(f"Error: {e}")
+        return -1
+    
 
 def has_favicon(url):
-    """
-    Vérifie si l'URL possède un favicon, même si le favicon est hébergé sur un autre domaine.
-    """
+
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
     }
@@ -129,10 +155,10 @@ def has_favicon(url):
         favicon_response = requests.get(favicon_url, headers=headers, stream=True)
         if favicon_response.status_code == 200:
             print(f"Le favicon de l'URL est disponible ici : {favicon_url}")
-            return -1
+            return 1
         else:
             print(f"Le favicon est inaccessible : {favicon_url}")
-            return 1
+            return -1
 
     except requests.exceptions.RequestException as e:
         print(f"Erreur lors de la récupération de l'URL : {e}")
@@ -155,3 +181,18 @@ def contient_https(url):
     except Exception as e:
         print(f"Erreur lors de l'analyse de l'URL : {e}")
         return 0
+    
+def has_prefix_suffix(url):
+    try:
+        # Parsear la URL para extraer el dominio
+        parsed_url = urlparse(url)
+        domain = parsed_url.netloc
+        
+        # Verificar si el dominio contiene un guion
+        if '-' in domain:
+            return 1
+        else:
+            return -1
+    except Exception as e:
+        print(f"Error al procesar la URL: {e}")
+        return False

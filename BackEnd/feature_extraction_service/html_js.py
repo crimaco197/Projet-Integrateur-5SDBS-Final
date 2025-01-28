@@ -12,13 +12,11 @@ def has_popup(url):
 
     # Vérifier si le code HTML contient des balises de popup
     popup_keywords = ['popup', 'modal', 'alert', 'dialog']
-    popup_found = False
+    popup_found = 1
 
     for keyword in popup_keywords:
         if soup.find_all(attrs={"class": keyword}) or soup.find_all(attrs={"id": keyword}):
-            popup_found = True
-            print(f"Popup keyword '{keyword}' detected!Popup Detected in HTML!")
-            return True
+            popup_found = -1
 
     return popup_found
 
@@ -37,6 +35,6 @@ def has_iframe(url):
             print(f"\nIframe {i}:")
             print(f" - Full Tag: {iframe}")
             print(f" - Source (src): {iframe.get('src', 'No src attribute')}")
-            return True
+            return 1
     else:
-        return False
+        return -1

@@ -36,3 +36,7 @@ google-services.json
 .ipynb_checkpoints
 BackEnd/feature_extraction_service/.ipynb_checkpoints
 .DS_Store
+.ipynb_checkpoints/ExtractCris-checkpoint.ipynb
+.ipynb_checkpoints/extractParams-checkpoint.py
+.ipynb_checkpoints/
+./BackEnd/model_IA_service/__pycache__/main.cpython-38.pyc

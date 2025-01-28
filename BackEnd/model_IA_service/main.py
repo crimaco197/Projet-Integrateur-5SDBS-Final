@@ -6,11 +6,11 @@ import pandas as pd
 
 app = FastAPI(title="Model IA Service")
 
-# Cargar el modelo y definir los nombres de las características
-model_path = "./RandomForest_BestModel_8827.joblib"
+# Load trained model
+model_path = "/home/user/Projet-Integrateur-5SDBS-Final/BackEnd/model_IA_service/RandomForest_BestModel_8827.joblib"
 model = joblib.load(model_path)
 
-# Diccionario para traducir las predicciones
+# Diccionary to translate the predictions
 prediction_labels = {
     1: "legitimate",
     -1: "malicious"
@@ -27,7 +27,7 @@ feature_names = [
 def read_root():
     return {"Hello": "Model IA Service"}
 
-# Define el modelo para los datos de entrada
+# Defining the class which will be use as the input data
 class Features(BaseModel):
     having_IP_Address: int
     URL_Length: int
@@ -50,24 +50,23 @@ class Features(BaseModel):
 @app.post("/predict")
 def predict_from_features(features_json: Features):
     """
-    Realiza una predicción basado en un JSON de características.
+    Makes a prediction based on a JSON of features.
 
-    :param features_json: dict con los valores de las características
-    :return: dict con la predicción traducida y la confianza
+    :param features_json: dict with the feature values
+    :return: dict with the translated prediction and confidence
     """
-    # Crear un DataFrame con los nombres de las características
+    # Create a DataFrame with the feature names
     test_data_vector = pd.DataFrame([features_json.dict()], columns=feature_names)
 
 
-    # Hacer la predicción
-    prediction = model.predict(test_data_vector)[0]  # Extraer la clase predicha del array
+    # Make the prediction
+    prediction = model.predict(test_data_vector)[0]  # Extract the predicted class from the array
     probabilities = model.predict_proba(test_data_vector)
-    confidence = int(round(np.max(probabilities, axis=1)[0] * 100))  # Convertir confianza a porcentaje entero
+    confidence = int(round(np.max(probabilities, axis=1)[0] * 100))  # Convert confidence to whole percentage
 
-    # Traducir la predicción
+    # Translate prediction
     translated_prediction = prediction_labels.get(prediction, "Unknown")
 
-    # Devolver resultados
     return {
         "prediction": translated_prediction,
         "confidence": confidence
