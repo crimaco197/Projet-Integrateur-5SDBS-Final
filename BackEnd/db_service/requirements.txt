@@ -1,3 +1,6 @@
 fastapi
 uvicorn
 requests
+sqlalchemy
+pymysql
+pydantic

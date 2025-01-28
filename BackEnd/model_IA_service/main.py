@@ -7,7 +7,7 @@ import pandas as pd
 app = FastAPI(title="Model IA Service")
 
 # Load trained model
-model_path = "/home/user/Projet-Integrateur-5SDBS-Final/BackEnd/model_IA_service/RandomForest_BestModel_8827.joblib"
+model_path = "./RandomForest_BestModel_8827.joblib"
 model = joblib.load(model_path)
 
 # Diccionary to translate the predictions

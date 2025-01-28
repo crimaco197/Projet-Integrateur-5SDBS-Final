@@ -1,0 +1,8 @@
+from sqlalchemy import Column, Integer, String
+from .database import Base
+
+class Item(Base):
+    __tablename__ = "items"
+    id = Column(Integer, primary_key=True, index=True)
+    nom = Column(String(255), index=True)
+    categorie = Column(St categorie = Column(String(200))ring(200))

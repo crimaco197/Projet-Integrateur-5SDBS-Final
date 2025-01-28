@@ -4,16 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fiability Assessment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 10px;
+        }
+
+        #output {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+            white-space: pre-wrap; /* Pour éviter que les espaces ne disparaissent */
+        }
+    </style>
 </head>
 <body>
-    <div>
-        <h2>Fiability Assessment</h2>
+    <h2>Fiability Assessment</h2>
 
-        <!--Just for the demo-->
-        <ul>
-            <li id="concerts"></li>
-        </ul>
-    </div>
+    <!-- Zone d'affichage des résultats -->
+    <div id="output">Chargement des données...</div>
+
+    <script src="script.js"></script>
 </body>
-<script src="script.js"></script>
 </html>
