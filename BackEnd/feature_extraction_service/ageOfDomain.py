@@ -1,4 +1,5 @@
 import requests
+import sys
 from datetime import datetime
 
 def age_of_domain(url):
@@ -14,9 +15,10 @@ def age_of_domain(url):
             else:
                 return -1
         else:
-            print("No archives found, autoreturning False")
             return -1
         
     except Exception as e:
-        print(f"Error when extracting the age of the domain from URL : {e}, autoreturning -1")
         return -1
+
+if __name__ == '__main__':
+    print(age_of_domain(sys.argv[1]))

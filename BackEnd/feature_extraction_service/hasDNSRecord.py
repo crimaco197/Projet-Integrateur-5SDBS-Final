@@ -2,7 +2,7 @@ import dns.resolver
 from urllib.parse import urlparse
 from datetime import datetime
 
-def has_DNS_Record(url):
+def DNSRecord(url):
     domain = None
     try:
         parsed_url = urlparse(url)
@@ -15,5 +15,4 @@ def has_DNS_Record(url):
         else:
             return -1
     except Exception as e:
-        print(f"Error when extracting the DNS from URL : {e}, autoreturning -1")
         return -1

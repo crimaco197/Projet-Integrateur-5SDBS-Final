@@ -1,6 +1,7 @@
 import re
 import requests
 from bs4 import BeautifulSoup
+from datetime import datetime
 from urllib.parse import urlparse, urljoin
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -9,7 +10,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 import time
 
-def est_adresse_ip(url):
+def having_IP_Address(url):
     try:
         parsed_url = urlparse(url)
         host = parsed_url.netloc
@@ -28,7 +29,7 @@ def est_adresse_ip(url):
         return 0
     
 
-def longueur_url(url):
+def URL_Length(url):
     try:
         # Calculer la longueur totale de l'URL
         longueur = len(url)
@@ -41,18 +42,16 @@ def longueur_url(url):
         else:
             return -1
     except Exception as e:
-        print(f"Erreur lors du calcul de la longueur de l'URL : {e}")
         return 0  # Retourne 0 en cas d'erreur
     
-def contient_arobase(url):
+def having_At_Symbol(url):
     try:
         # Vérifier si le caractère '@' est présent dans l'URL
         return -1 if '@' in url else 1
     except Exception as e:
-        print(f"Erreur lors de l'analyse de l'URL : {e}")
         return 0  # Retourne 0 en cas d'erreur
     
-def contient_sous_domaine(url):
+def having_Sub_Domain(url):
     """
     Vérifie si l'URL contient un sous-domaine.
     """
@@ -77,7 +76,6 @@ def contient_sous_domaine(url):
             return 1
 
     except Exception as e:
-        print(f"Erreur lors de l'analyse de l'URL : {e}")
         return 0
     
 def double_slash_redirecting(url):
@@ -95,7 +93,7 @@ def double_slash_redirecting(url):
     # Verify if '//' is after position 7
     return -1 if any(pos > 7 for pos in occurrences) else 1 # 1 is Legitimate, -1 is Phishing
 
-def domain_registeration_length(url):
+def Domain_registeration_length(url):
     """
     See the WhoisXMLAPI API for domain information.
     Returns -1 if expiration date is <= 1 years, otherwise returns 1 
@@ -119,11 +117,11 @@ def domain_registeration_length(url):
         else:
             return -1
     except Exception as e:
-        print(f"Error: {e}")
         return -1
     
+    return -1
 
-def has_favicon(url):
+def Favicon(url):
 
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
@@ -135,8 +133,7 @@ def has_favicon(url):
         
         # Vérifier si la requête a réussi
         if response.status_code != 200:
-            print(f"Erreur : Impossible d'accéder à l'URL. Code de statut {response.status_code}")
-            return False
+            return -1
         
         # Analyser le contenu HTML avec BeautifulSoup
         soup = BeautifulSoup(response.content, 'html.parser')
@@ -154,18 +151,15 @@ def has_favicon(url):
         # Vérifier si l'URL du favicon est accessible
         favicon_response = requests.get(favicon_url, headers=headers, stream=True)
         if favicon_response.status_code == 200:
-            print(f"Le favicon de l'URL est disponible ici : {favicon_url}")
             return 1
         else:
-            print(f"Le favicon est inaccessible : {favicon_url}")
             return -1
 
     except requests.exceptions.RequestException as e:
-        print(f"Erreur lors de la récupération de l'URL : {e}")
-        return 0
+        return -1
     
 
-def contient_https(url):
+def HTTPS_token(url):
     """
     Vérifie si l'URL commence par 'https://'.
     """
@@ -173,16 +167,13 @@ def contient_https(url):
         # Vérifier si l'URL commence par 'https://'
         parsed_url = urlparse(url)
         if parsed_url.scheme == "https":
-            print(f"L'URL utilise HTTPS : {url}")
             return 1
         else:
-            print(f"L'URL n'utilise pas HTTPS : {url}")
             return -1
     except Exception as e:
-        print(f"Erreur lors de l'analyse de l'URL : {e}")
         return 0
     
-def has_prefix_suffix(url):
+def Prefix_Suffix(url):
     try:
         # Parsear la URL para extraer el dominio
         parsed_url = urlparse(url)
@@ -194,5 +185,4 @@ def has_prefix_suffix(url):
         else:
             return -1
     except Exception as e:
-        print(f"Error al procesar la URL: {e}")
-        return False
+        return -1

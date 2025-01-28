@@ -10,7 +10,7 @@ from selenium.webdriver.common.keys import Keys
 import time
 
 
-def count_external_links(url):
+def Links_pointing_to_page(url):
     """
     Returns 1 if there are more than 2 external links,
     0 if there are 1 or 2 external links,
@@ -22,7 +22,6 @@ def count_external_links(url):
         
         # Check if the request was successful
         if response.status_code != 200:
-            print(f"Error: Unable to access {url}. Status Code: {response.status_code}")
             return -1
         
         # Parse the HTML content
@@ -53,5 +52,4 @@ def count_external_links(url):
             return -1
             
     except Exception as e:
-        print(f"Error occurred while processing {url}: {e}")
         return -1

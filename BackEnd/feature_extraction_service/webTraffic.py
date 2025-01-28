@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import json
+import sys
 
 def web_traffic(url):
     response = requests.get(f"https://hypestat.com/info/{url}")
@@ -24,5 +25,7 @@ def web_traffic(url):
             else:
                 return -1
     except AttributeError:
-        print("Rank data not found, returning -1")
         return -1
+
+if __name__ == '__main__':
+    print(web_traffic(sys.argv[1]))
