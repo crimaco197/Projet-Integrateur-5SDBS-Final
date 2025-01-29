@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const response = await fetch(apiUrl, { method: "GET" });
 
                 if (!response.ok) {
-                    throw new Error(`Erreur HTTP ! Statut : ${response.status}`);
+                    throw new Error(`HTTP error! Status: ${response.status}`);
                 }
 
                 const result = await response.json();
@@ -22,16 +22,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 
                 if (prediction === "legitimate") {
                     output.className = "legitimate";
-                    output.innerHTML = `✅ <strong>Site sûr</strong> <br> Confiance : ${confidence}%`;
+                    output.innerHTML = `✅ <strong>Safe Website</strong> <br> Confidence: ${confidence}%`;
                 } else {
                     output.className = "fraudulent";
-                    output.innerHTML = `❌ <strong>Site frauduleux</strong> <br> Confiance : ${confidence}%`;
+                    output.innerHTML = `❌ <strong>Fraudulent Website</strong> <br> Confidence: ${confidence}%`;
                 }
 
             } catch (error) {
                 console.error(error);
                 output.className = "error";
-                output.innerHTML = `⚠️ Erreur : ${error.message}`;
+                output.innerHTML = `⚠️ Error: ${error.message}`;
             }
 
             output.style.display = "block";

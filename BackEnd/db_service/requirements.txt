@@ -4,3 +4,4 @@ requests
 sqlalchemy
 pymysql
 pydantic
+codecarbon

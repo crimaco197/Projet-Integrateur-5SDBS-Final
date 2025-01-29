@@ -3,8 +3,11 @@ from pydantic import BaseModel
 import joblib
 import numpy as np
 import pandas as pd
+from codecarbon import EmissionsTracker
 
-app = FastAPI(title="Model IA Service")
+tracker = EmissionsTracker()
+
+app = FastAPI(title="Model IA Microservice")
 
 # Load trained model
 model_path = "./RandomForest_BestModel_8827.joblib"
@@ -49,6 +52,7 @@ class Features(BaseModel):
 # Predict endpoint
 @app.post("/predict")
 def predict_from_features(features_json: Features):
+    tracker.start()
     """
     Makes a prediction based on a JSON of features.
 
@@ -66,7 +70,7 @@ def predict_from_features(features_json: Features):
 
     # Translate prediction
     translated_prediction = prediction_labels.get(prediction, "Unknown")
-
+    tracker.stop()
     return {
         "prediction": translated_prediction,
         "confidence": confidence

@@ -5,8 +5,11 @@ import paramiko  # For executing code on a remote VM via SSH
 import re
 import json
 from urllib.parse import urlparse
+from codecarbon import EmissionsTracker
 
-app = FastAPI()
+tracker = EmissionsTracker()
+
+app = FastAPI(title="Orchestrator Microservice")
 
 execution_result = {"output": None}
 
@@ -85,6 +88,7 @@ def execute_encoder_code(url):
         ssh.close()
         print("Execution thread stopped.")
 
+
 def query_database(input_url):
     """Function to query the database."""
     global stop_event
@@ -101,6 +105,7 @@ def query_database(input_url):
 
 @app.get("/start_orchestration/")
 def start_orchestration(url):
+    tracker.start()
     global stop_event, execution_result
     stop_event.clear()  # Reset stop flag
     execution_result = {"output": None}
@@ -120,14 +125,14 @@ def start_orchestration(url):
         # If DB query finishes first, stop the encoder immediately
         stop_event.set()
         print("Database finished first. Stopping encoder...")
-
+        tracker.stop()
         return {"status": "Orchestration complete", "execution_output": execution_result["output"]}
 
     print("Database result was not found or an error occurred. Awaiting encoder result...")
     
     # If database failed, wait for the encoder thread to complete
     exec_thread.join()
-
+    tracker.stop()
     return {"status": "Orchestration complete", "execution_output": execution_result["output"]}
 
 

@@ -5,3 +5,4 @@ numpy
 joblib
 scikit-learn==1.4.2
 pandas
+codecarbon
