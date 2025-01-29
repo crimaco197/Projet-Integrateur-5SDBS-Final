@@ -71,3 +71,4 @@ def predict_from_features(features_json: Features):
         "prediction": translated_prediction,
         "confidence": confidence
     }
+

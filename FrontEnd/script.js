@@ -1,42 +1,41 @@
-async function fetchData() {
-    const url = 'http://192.168.37.69:50000/start_orchestration/?url=https://www.youtube.com/';
-    const options = {
-        method: 'GET',
-    };
+document.addEventListener("DOMContentLoaded", function () {
+    const button = document.getElementById("analyze-btn");
+    const output = document.getElementById("output");
 
-    try {
-        // Envoi de la requête
-        const response = await fetch(url, options);
+    button.addEventListener("click", function () {
+        chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {
+            const currentUrl = tabs[0].url;
+            const apiUrl = `http://192.168.37.69:50000/start_orchestration/?url=${encodeURIComponent(currentUrl)}`;
 
-        // Vérification du statut de la réponse
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+            try {
+                const response = await fetch(apiUrl, { method: "GET" });
 
-        // Traitement de la réponse JSON
-        const result = await response.json();
-        console.log(result);
+                if (!response.ok) {
+                    throw new Error(`Erreur HTTP ! Statut : ${response.status}`);
+                }
 
-        // Récupérer l'élément où afficher les données
-        const output = document.getElementById('output');
-        
-        // Affichage des données sans le statut
-        if (output) {
-            output.innerHTML = `
-                <p><strong>Prediction:</strong> ${result.execution_output.prediction}</p>
-                <p><strong>Confidence:</strong> ${result.execution_output.confidence}%</p>
-            `;
-        }
-    } catch (error) {
-        console.error(error);
+                const result = await response.json();
+                console.log(result);
 
-        // En cas d'erreur, affichez un message d'erreur dans l'élément HTML
-        const output = document.getElementById('output');
-        if (output) {
-            output.textContent = `Erreur : ${error.message}`;
-        }
-    }
-}
+                const prediction = result.execution_output.prediction.toLowerCase();
+                const confidence = result.execution_output.confidence;
+                
+                if (prediction === "legitimate") {
+                    output.className = "legitimate";
+                    output.innerHTML = `✅ <strong>Site sûr</strong> <br> Confiance : ${confidence}%`;
+                } else {
+                    output.className = "fraudulent";
+                    output.innerHTML = `❌ <strong>Site frauduleux</strong> <br> Confiance : ${confidence}%`;
+                }
 
-// Lancement de la fonction fetchData au chargement du popup
-fetchData();
+            } catch (error) {
+                console.error(error);
+                output.className = "error";
+                output.innerHTML = `⚠️ Erreur : ${error.message}`;
+            }
+
+            output.style.display = "block";
+            output.style.opacity = "1";
+        });
+    });
+});
